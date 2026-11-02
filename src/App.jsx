@@ -2,7 +2,7 @@ function App() {
   return (
     <>
       <header className="header">
-        <h1></h1>
+        <h1>Atividade React</h1>
       </header>
 
       <main className="grid">
