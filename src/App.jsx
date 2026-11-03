@@ -3,6 +3,7 @@ import Accordion from './components/Accordion'
 import Pagination from './components/Pagination'
 import ProgressBar from './components/ProgressBar'
 import Tabs from './components/Tabs'
+import Dropdown from './components/Dropdown'
 import Toast from './components/Toast'
 
 const faqItems = [
@@ -33,6 +34,8 @@ function App() {
   const [progress, setProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
 
+  const [language, setLanguage] = useState('Português')
+
   const [toast, setToast] = useState(null)
 
   function showToast(message, type) {
@@ -60,6 +63,14 @@ function App() {
 
     return () => clearTimeout(timer)
   }, [isUploading, progress])
+
+  const languageOptions = ['Português', 'English', 'Español'].map((lang) => ({
+    label: lang,
+    onClick: () => {
+      setLanguage(lang)
+      showToast(`Idioma alterado para ${lang}`, 'info')
+    },
+  }))
 
   return (
     <>
@@ -101,6 +112,12 @@ function App() {
         </section>
 
         <section className="card">
+          <h2>Menu Suspenso (Idioma)</h2>
+          <Dropdown label="Escolher idioma" options={languageOptions} />
+          <p>Idioma selecionado: {language}</p>
+        </section>
+
+        <section className="card">
           <h2>Notificação Toast</h2>
           <button onClick={() => showToast('Operação realizada com sucesso!', 'success')}>Sucesso</button>
           <button onClick={() => showToast('Erro ao salvar os dados.', 'error')}>Erro</button>
@@ -109,7 +126,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p></p>
+        <p>Vinicius Sousa - Tópicos avançados em programação</p>
       </footer>
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
