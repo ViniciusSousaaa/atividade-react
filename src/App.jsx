@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Accordion from './components/Accordion'
 import Pagination from './components/Pagination'
+import Tabs from './components/Tabs'
 
 const faqItems = [
   { title: 'Como faço um pedido?', content: 'Escolha o produto, clique em comprar e siga as etapas do carrinho.' },
@@ -14,6 +15,12 @@ const products = [
   'Pendrive', 'HD externo', 'Roteador', 'Microfone',
 ]
 const ITEMS_PER_PAGE = 4
+
+const productTabs = [
+  { title: 'Descrição', content: <p>Notebook leve e potente, ideal para estudos e trabalho.</p> },
+  { title: 'Especificações', content: <p>Processador de 8 núcleos, 16 GB de RAM e SSD de 512 GB.</p> },
+  { title: 'Avaliações', content: <p>Nota 4,8 de 5 com base em 120 avaliações de clientes.</p> },
+]
 
 function App() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -45,6 +52,11 @@ function App() {
             currentPage={currentPage}
             onPageChange={setCurrentPage}
           />
+        </section>
+
+        <section className="card">
+          <h2>Abas (Detalhes do produto)</h2>
+          <Tabs tabs={productTabs} />
         </section>
       </main>
 
