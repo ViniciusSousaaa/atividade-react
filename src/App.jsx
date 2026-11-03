@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Accordion from './components/Accordion'
 import Pagination from './components/Pagination'
 import Tabs from './components/Tabs'
+import Toast from './components/Toast'
 
 const faqItems = [
   { title: 'Como faço um pedido?', content: 'Escolha o produto, clique em comprar e siga as etapas do carrinho.' },
@@ -27,6 +28,14 @@ function App() {
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE)
   const start = (currentPage - 1) * ITEMS_PER_PAGE
   const visibleProducts = products.slice(start, start + ITEMS_PER_PAGE)
+
+  const [toast, setToast] = useState(null)
+
+  function showToast(message, type) {
+    setToast({ message, type })
+  }
+
+  const closeToast = useCallback(() => setToast(null), [])
 
   return (
     <>
@@ -58,11 +67,20 @@ function App() {
           <h2>Abas (Detalhes do produto)</h2>
           <Tabs tabs={productTabs} />
         </section>
+
+        <section className="card">
+          <h2>Notificação Toast</h2>
+          <button onClick={() => showToast('Operação realizada com sucesso!', 'success')}>Sucesso</button>
+          <button onClick={() => showToast('Erro ao salvar os dados.', 'error')}>Erro</button>
+          <button onClick={() => showToast('Você tem uma nova mensagem.', 'info')}>Informação</button>
+        </section>
       </main>
 
       <footer className="footer">
         <p></p>
       </footer>
+
+      {toast && <Toast message={toast.message} type={toast.type} onClose={closeToast} />}
     </>
   )
 }
