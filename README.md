@@ -13,5 +13,7 @@ Aplicação web responsiva feita com React para a disciplina de Tópicos Avança
 
 ## Como rodar
 
+```bash
 npm install
 npm run dev
+```
