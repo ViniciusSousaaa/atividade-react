@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Accordion from './components/Accordion'
 import Pagination from './components/Pagination'
+import ProgressBar from './components/ProgressBar'
 import Tabs from './components/Tabs'
 import Toast from './components/Toast'
 
@@ -29,6 +30,9 @@ function App() {
   const start = (currentPage - 1) * ITEMS_PER_PAGE
   const visibleProducts = products.slice(start, start + ITEMS_PER_PAGE)
 
+  const [progress, setProgress] = useState(0)
+  const [isUploading, setIsUploading] = useState(false)
+
   const [toast, setToast] = useState(null)
 
   function showToast(message, type) {
@@ -36,6 +40,26 @@ function App() {
   }
 
   const closeToast = useCallback(() => setToast(null), [])
+
+  function startUpload() {
+    setProgress(0)
+    setIsUploading(true)
+  }
+
+  useEffect(() => {
+    if (!isUploading) return
+
+    const timer = setTimeout(() => {
+      if (progress < 100) {
+        setProgress(progress + 10)
+      } else {
+        setIsUploading(false)
+        setToast({ message: 'Upload concluído com sucesso!', type: 'success' })
+      }
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [isUploading, progress])
 
   return (
     <>
@@ -61,6 +85,14 @@ function App() {
             currentPage={currentPage}
             onPageChange={setCurrentPage}
           />
+        </section>
+
+        <section className="card">
+          <h2>Barra de Progresso (Upload)</h2>
+          <ProgressBar value={progress} label="Progresso do upload" />
+          <button onClick={startUpload} disabled={isUploading}>
+            {isUploading ? 'Enviando...' : 'Simular upload'}
+          </button>
         </section>
 
         <section className="card">
